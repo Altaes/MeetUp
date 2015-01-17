@@ -123,7 +123,6 @@ public abstract class PlusBaseActivity extends Activity
             mPlusClient.disconnect();
         }
     }
-
     /**
      * Sign out the user (so they can switch to another account).
      */

@@ -3,15 +3,13 @@ package willchiu.meetup;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-
 import android.app.LoaderManager.LoaderCallbacks;
-import android.content.ContentResolver;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -108,6 +106,7 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
             @Override
             public void onClick(View view) {
                 attemptLogin();
+                //switch to new activity
             }
         });
 
@@ -172,6 +171,7 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
             showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
+            //create a new activity or switch to it
         }
     }
 
@@ -223,7 +223,7 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
 
     @Override
     protected void onPlusClientSignIn() {
-        //Set up sign out and disconnect buttons.
+        //Set up sign out and nect buttons.
         Button signOutButton = (Button) findViewById(R.id.plus_sign_out_button);
         signOutButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -250,9 +250,14 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
         //TODO: Update this logic to also handle the user logged in by email.
         boolean connected = getPlusClient().isConnected();
 
-        mSignOutButtons.setVisibility(connected ? View.VISIBLE : View.GONE);
+        mSignOutButtons.setVisibility(connected ? View.GONE : View.GONE);
         mPlusSignInButton.setVisibility(connected ? View.GONE : View.VISIBLE);
         mEmailLoginFormView.setVisibility(connected ? View.GONE : View.VISIBLE);
+        if (connected == true) {
+            Intent maps = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(maps);
+        }
+
     }
 
     @Override
@@ -375,6 +380,7 @@ public class LoginActivity extends PlusBaseActivity implements LoaderCallbacks<C
 
             if (success) {
                 finish();
+                //This should switch to the Maps Activity
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
